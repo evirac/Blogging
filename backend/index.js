@@ -1,23 +1,22 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const path = require("path");
-
-const port = 5000;
+const authRoutes = require("./routes/UserRoute");
 
 const app = express();
-app.use(cors);
+
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-// Connect to mongodb
-mongoose.connect("mongodb://0.0.0.0:27017/blogging");
-const connection = mongoose.connection;
-connection.once("open", () => {
-  console.log("MongoDB database connection established successfully");
-});
+// MongoDB connection
+mongoose
+  .connect("mongodb://0.0.0.0:27017/blogging", {})
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log(err));
 
-app.use("/api/users", require("./models/Users"));
+// Routes
+app.use("/api/auth", authRoutes);
 
-app.listen(port, () => {
-  console.log("Server is running on port ", port);
-});
+// Start server
+app.listen(5000, () => console.log("Server running on port 5000"));

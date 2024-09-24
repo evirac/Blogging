@@ -1,43 +1,36 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../features/auth/AuthSlice";
+import { login } from "../redux/AuthSlice";
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [form, setForm] = useState({ username: "", password: "" });
   const dispatch = useDispatch();
-  const { isLoading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login(formData));
+    dispatch(login(form));
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <input
-        type="email"
-        name="email"
-        value={formData.email}
+        type="text"
+        name="username"
+        placeholder="Username"
         onChange={handleChange}
-        placeholder="Email"
         required
       />
       <input
         type="password"
         name="password"
-        value={formData.password}
-        onChange={handleChange}
         placeholder="Password"
+        onChange={handleChange}
         required
       />
-      <button type="submit" disabled={isLoading}>
+      <button type="submit" disabled={loading}>
         Login
       </button>
       {error && <p>{error}</p>}

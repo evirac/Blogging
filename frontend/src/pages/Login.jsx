@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/AuthSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error, isAuthenticated } = useSelector(
+    (state) => state.auth
+  );
+  const navigate = useNavigate();
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -13,6 +17,10 @@ const Login = () => {
     e.preventDefault();
     dispatch(login(form));
   };
+
+  if (isAuthenticated) {
+    navigate("/");
+  }
 
   return (
     <form onSubmit={handleSubmit}>

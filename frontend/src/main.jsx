@@ -7,9 +7,14 @@ import App from "./App.jsx";
 import Error from "./pages/Error.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
-  { path: "/", element: <App />, errorElement: <Error /> },
+  {
+    path: "/",
+    element: <ProtectedRoute element={<App />} />,
+    errorElement: <Error />,
+  },
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
 ]);

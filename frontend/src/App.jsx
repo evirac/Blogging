@@ -1,53 +1,12 @@
-import { useState } from "react";
-import { GoHome } from "react-icons/go";
-import { CgNotes } from "react-icons/cg";
-import { BsFileBarGraph } from "react-icons/bs";
-import { VscGraphLine } from "react-icons/vsc";
-import { GoGear } from "react-icons/go";
-import { IoMdExit } from "react-icons/io";
-
+import Navbar from "./components/Navbar";
+import Header from "./components/Header";
 import "./sass/Home.scss";
 
 function App() {
   return (
     <>
-      <div className="navbar">
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <a href="#" className="nav-link">
-              <GoHome /> <span className="link-text"> Dashboard </span>
-            </a>
-          </li>
-          <li className="nav-item active">
-            <a href="#" className="nav-link">
-              <CgNotes /> <span className="link-text"> Blogs </span>
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link">
-              <BsFileBarGraph /> <span className="link-text"> Finances </span>
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link">
-              <VscGraphLine /> <span className="link-text"> Pitches </span>
-            </a>
-          </li>
-          <div className="bottom">
-            <li className="nav-item">
-              <a href="#" className="nav-link">
-                <GoGear /> <span className="link-text"> Settings </span>
-              </a>
-            </li>
-
-            <li className="nav-item">
-              <a href="#" className="nav-link">
-                <IoMdExit /> <span className="link-text"> Logout </span>
-              </a>
-            </li>
-          </div>
-        </ul>
-      </div>
+      <Navbar />
+      <Header />
 
       <div className="main">
         <p>

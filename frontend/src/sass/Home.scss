@@ -1,4 +1,6 @@
 $primary-color: #6c5dd3;
+$main-bgc: #fafafb;
+$border-color: #e8e8e9;
 
 :root {
   font: 16px;
@@ -12,14 +14,17 @@ body {
 }
 
 .main {
-  margin-left: 6rem;
+  margin-left: 10rem;
   padding: 1rem;
+  background-color: $main-bgc;
 }
 
 .navbar {
-  width: 9rem;
+  width: 10rem;
   height: 100vh;
   position: fixed;
+  background-color: #fff;
+  border-right: 1px solid $border-color;
 
   .navbar-nav {
     list-style: none;
@@ -28,15 +33,37 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    justify-content: flex-start;
 
     .nav-item {
       width: 100%;
+      &.active {
+        .nav-link {
+          filter: grayscale(0%) opacity(1); // Make it fully visible
+          color: $primary-color; // Make the active link primary color
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background-color: $primary-color;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+          }
+        }
+      }
+
       .nav-link {
         display: flex;
+        justify-content: flex-end; // Align nav items to the right
         align-items: center;
         height: 2rem;
         color: $primary-color;
         text-decoration: none;
+        padding-right: 1rem; // Add padding to create space on the right
+        position: relative;
         filter: grayscale(100%) opacity(0.7);
 
         .link-text {
@@ -52,32 +79,83 @@ body {
 
     .bottom {
       margin-top: auto;
+      margin-bottom: 2rem;
     }
   }
 }
 
-// small screens
+// Medium screens (tablets)
+@media only screen and (max-width: 780px) {
+  .main {
+    margin-left: 3rem;
+  }
+  .navbar {
+    width: 3rem;
+    .link-text {
+      display: none;
+    }
+  }
+}
 
-@media only screen and (max-width: 600px) {
+// Small screens
+@media only screen and (max-width: 480px) {
   .navbar {
     bottom: 0;
     width: 100vw;
-    height: 5rem;
+    height: 3rem;
+
+    .navbar-nav {
+      flex-direction: row;
+      justify-content: space-around; // Distribute nav items evenly
+
+      .nav-item {
+        flex: 1; // Ensure all items are evenly spaced
+
+        &.active {
+          .nav-link {
+            position: relative;
+
+            &::before {
+              width: 0px;
+            }
+
+            // Oval pill effect at the bottom
+            &::after {
+              content: "";
+              position: absolute;
+              left: 75%;
+              bottom: -0.5rem;
+              transform: translateX(-50%);
+              width: 60%; // Adjust width of the pill
+              height: 0.25rem; // Adjust height for the pill shape
+              background-color: $primary-color;
+              border-radius: 50px; // Fully rounded for the pill effect
+            }
+          }
+        }
+      }
+
+      .nav-link {
+        justify-content: center;
+
+        .link-text {
+          display: none;
+          margin-left: 1rem;
+        }
+      }
+    }
+
+    .bottom {
+      display: none;
+    }
   }
 
   .logo {
     display: none;
   }
 
-  .navbar-nav {
-    flex-direction: row;
-  }
-
-  .nav-link {
-    justify-content: center;
-  }
-
   .main {
-    margin: 0;
+    margin-left: 0;
+    padding-bottom: 2rem;
   }
 }

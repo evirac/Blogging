@@ -18,7 +18,7 @@ function App() {
               <GoHome /> <span className="link-text"> Dashboard </span>
             </a>
           </li>
-          <li className="nav-item">
+          <li className="nav-item active">
             <a href="#" className="nav-link">
               <CgNotes /> <span className="link-text"> Blogs </span>
             </a>

@@ -4,9 +4,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const router = express.Router();
 
-// Register a new user
 router.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { name, designation, email, password } = req.body;
 
   try {
     // Hash password
@@ -14,13 +13,18 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Check if the user already exists
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: "Username already taken" });
+      return res.status(400).json({ error: "Email already registered" });
     }
 
     // Create new user
-    const newUser = new User({ username, email, password: hashedPassword });
+    const newUser = new User({
+      name,
+      designation,
+      email,
+      password: hashedPassword,
+    });
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully" });
@@ -32,17 +36,17 @@ router.post("/register", async (req, res) => {
 
 // Login
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ username });
-    if (!user) return res.status(400).json({ error: "Invalid credentials" });
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ error: "user not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
+    if (!isMatch) return res.status(400).json({ error: "invalid password" });
 
     // Sign JWT
-    const token = jwt.sign({ id: user._id }, "your_jwt_secret", {
+    const token = jwt.sign({ id: user._id }, "secret_key", {
       expiresIn: "1h",
     });
 

@@ -1,8 +1,10 @@
 import React from "react";
 import { ChevronDown, Search, User } from "lucide-react";
+import { useSelector } from "react-redux";
 import "../sass/Header.scss";
 
 const Header = () => {
+  const user = useSelector((state) => state.auth.user);
   return (
     <header className="header">
       <div className="menu-container">
@@ -33,8 +35,8 @@ const Header = () => {
             <User size={24} />
           </div>
           <div className="profile-info">
-            <p className="profile-name">Robert Fox</p>
-            <p className="profile-title">Finance Manager</p>
+            <p className="profile-name">{user?.name || "Guest"}</p>
+            <p className="profile-title">{user?.designation || "N/A"}</p>
           </div>
         </div>
       </div>

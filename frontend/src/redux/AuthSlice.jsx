@@ -20,6 +20,10 @@ const authSlice = createSlice({
       state.loading = false;
       state.token = action.payload;
       state.isAuthenticated = true;
+      state.user = {
+        name: action.payload.name,
+        designation: action.payload.designation,
+      };
     },
     loginFailure: (state, action) => {
       state.loading = false;
@@ -56,7 +60,9 @@ export const register = (credentials) => async (dispatch) => {
   dispatch(loginStart());
   try {
     await axios.post("http://localhost:5000/api/auth/register", credentials);
-    dispatch(login(credentials)); // Login the user after registration
+    dispatch(
+      login({ email: credentials.email, password: credentials.password })
+    );
   } catch (error) {
     dispatch(loginFailure(error.response.data.error));
   }

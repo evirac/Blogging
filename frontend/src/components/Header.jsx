@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { ChevronDown, Search, User } from "lucide-react";
-import { useSelector } from "react-redux";
+import { fetchUserDetails } from "../redux/AuthSlice";
 import "../sass/Header.scss";
 
 const Header = () => {
-  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isAuthenticated && !user) {
+      dispatch(fetchUserDetails());
+    }
+  }, [isAuthenticated, user, dispatch]);
+
   return (
     <header className="header">
       <div className="menu-container">
@@ -35,8 +44,8 @@ const Header = () => {
             <User size={24} />
           </div>
           <div className="profile-info">
-            <p className="profile-name">{user?.name || "Guest"}</p>
-            <p className="profile-title">{user?.designation || "N/A"}</p>
+            <p className="profile-name">{user?.name || "User"}</p>
+            <p className="profile-title">{user?.designation || "Role"}</p>
           </div>
         </div>
       </div>

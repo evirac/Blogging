@@ -13,7 +13,8 @@
     color: $primary-color;
 
     &:hover {
-      background-color: lighten($primary-color, 100%);
+      border-color: adjust-color($primary-color, $lightness: -10%);
+      background-color: adjust-color($main-bgc, $lightness: -10%);
     }
   }
 
@@ -22,7 +23,7 @@
     color: white;
 
     &:hover {
-      background-color: darken($primary-color, 10%);
+      background-color: adjust-color($primary-color, $lightness: -10%);
     }
   }
 }

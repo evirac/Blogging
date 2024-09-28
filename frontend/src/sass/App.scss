@@ -14,6 +14,25 @@ body {
   margin-left: 10rem;
   padding: 1rem;
   background-color: $main-bgc;
+
+  .title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
 }
 
 // Medium screens (tablets)
@@ -31,10 +50,6 @@ body {
 
 // Small screens
 @media only screen and (max-width: 600px) {
-  .logo {
-    display: none;
-  }
-
   .main {
     margin-left: 0;
     padding-bottom: 2rem;

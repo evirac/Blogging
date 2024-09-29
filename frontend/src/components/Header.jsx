@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ChevronDown, Search, User } from "lucide-react";
-import { fetchUserDetails } from "../redux/AuthSlice";
+import { fetchUser } from "../redux/AuthSlice";
 import "../sass/Header.scss";
 
 const Header = () => {
@@ -10,7 +10,7 @@ const Header = () => {
 
   useEffect(() => {
     if (isAuthenticated && !user) {
-      dispatch(fetchUserDetails());
+      dispatch(fetchUser());
     }
   }, [isAuthenticated, user, dispatch]);
 

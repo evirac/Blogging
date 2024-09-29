@@ -85,23 +85,17 @@ export const register = (credentials) => async (dispatch) => {
   }
 };
 
-// fetch user details
-export const fetchUserDetails = () => async (dispatch) => {
-  dispatch(fetchUserStart());
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("No token found");
+// Fetch user details after login
+export const fetchUser = () => async (dispatch, getState) => {
+  const { token } = getState().auth;
 
+  try {
     const res = await axios.get("http://localhost:5000/api/auth/me", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    dispatch(fetchUserSuccess(res.data));
+    dispatch(loginSuccess({ token, ...res.data }));
   } catch (error) {
-    dispatch(
-      fetchUserFailure(
-        error.response?.data?.error || "Failed to fetch user details"
-      )
-    );
+    dispatch(loginFailure("Failed to fetch user details"));
   }
 };

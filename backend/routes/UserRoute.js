@@ -1,8 +1,9 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
 const router = express.Router();
+const User = require("../models/User");
+require("dotenv").config();
 
 router.post("/register", async (req, res) => {
   const { name, designation, email, password } = req.body;
@@ -46,7 +47,7 @@ router.post("/login", async (req, res) => {
     if (!isMatch) return res.status(400).json({ error: "invalid password" });
 
     // Sign JWT
-    const token = jwt.sign({ id: user._id }, "secret_key", {
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1h",
     });
 
@@ -68,7 +69,7 @@ function verifyToken(req, res, next) {
     return res.status(401).json({ error: "No token, authorization denied" });
 
   try {
-    const decoded = jwt.verify(token, "your_jwt_secret");
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
     req.user = decoded;
     next();
   } catch (error) {
@@ -79,7 +80,7 @@ function verifyToken(req, res, next) {
 // Get user details
 router.get("/me", verifyToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select(
+    const user = await User.findById(req.userId).select(
       "name designation email"
     );
     if (!user) {

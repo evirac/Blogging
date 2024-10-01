@@ -64,6 +64,7 @@ export const login = (credentials) => async (dispatch) => {
       credentials
     );
     const { token } = res.data;
+    console.log("inside auth slice login, token: ", token);
 
     localStorage.setItem("token", token);
 

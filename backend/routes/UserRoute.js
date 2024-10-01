@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const User = require("../models/User");
+const auth = require("../middleware/Auth");
 require("dotenv").config();
 
 router.post("/register", async (req, res) => {
@@ -52,42 +53,32 @@ router.post("/login", async (req, res) => {
     });
 
     res.json({ token });
+    console.log("Inside login!!!", token);
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }
 });
 
 // Protected route example
-router.get("/protected", verifyToken, (req, res) => {
+router.get("/protected", auth, (req, res) => {
   res.json({ message: "You have access!" });
 });
 
-// JWT verification middleware
-function verifyToken(req, res, next) {
-  const token = req.header("Authorization");
-  if (!token)
-    return res.status(401).json({ error: "No token, authorization denied" });
-
-  try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    req.user = decoded;
-    next();
-  } catch (error) {
-    res.status(401).json({ error: "Token is not valid" });
-  }
-}
-
 // Get user details
-router.get("/me", verifyToken, async (req, res) => {
+router.get("/me", auth, async (req, res) => {
   try {
+    console.log("Inside me route!------------------");
     const user = await User.findById(req.userId).select(
       "name designation email"
     );
+    console.log("user is: ", user);
     if (!user) {
+      console.log("user not found!!");
       return res.status(404).json({ error: "User not found" });
     }
     res.json(user);
   } catch (error) {
+    console.log("Oh oh!!!! get user caught!!!");
     res.status(500).json({ error: "Server error" });
   }
 });

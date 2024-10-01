@@ -1,19 +1,24 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const verifyToken = (req, res, next) => {
-  const token = req.headers["authorization"];
-  if (!token) return res.status(403).json({ message: "No token provided" });
-
-  const tokenParts = token.split(" ");
-  if (tokenParts[0] !== "Bearer" || !tokenParts[1]) {
-    return res.status(401).json({ message: "Invalid token format" });
+// Middleware for authenticating token
+const auth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ message: "No token provided" });
   }
 
-  jwt.verify(token.split(" ")[1], process.env.SECRET_KEY, (err, decoded) => {
-    if (err)
-      return res.status(500).json({ message: "Failed to authenticate token" });
-    req.userId = decoded.id;
+  const token = authHeader.split(" ")[1];
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    req.userId = decoded.userId;
+    console.log("user: ", req.userId);
     next();
-  });
+  } catch (error) {
+    console.log("inside auth catch block");
+    console.error("Token verification error:", error.message); // Log error details
+    res.status(401).json({ message: "Invalid token" });
+  }
 };
+
+module.exports = auth;
